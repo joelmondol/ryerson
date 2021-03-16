@@ -1,0 +1,60 @@
+---
+
+NONE OF THESE CODE WORK. I AM STILL WORKING ON THEM
+The libraries are not working and I am still working on loading the files
+---
+
+C
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```
+CODE 1
+
+
+library(igraph)
+library(magrittr)
+library(visNetwork)
+library(data.table)
+
+setwd("~/Desktop/R Fun/Data")
+mydata <- read.csv("My Fake Transaction Data.csv", head = T)
+move = names(mydata)[names(mydata) == "originator" | names(mydata)== "beneficiary"]
+setcolorder(mydata, c(move, setdiff(names(mydata), move))) 
+graph <- graph.data.frame(mydata, directed=F)
+graph <- simplify(graph)
+
+fc <- fastgreedy.community(graph)
+V(graph)$community <- fc$membership
+{nodes <- data.frame(id = V(graph)$name, title = V(graph)$name, group = V(graph)$community)
+nodes <- nodes[order(nodes$id, decreasing = F),]
+edges <- get.data.frame(graph, what="edges")[1:2]
+
+visNetwork(nodes, edges) %>%
+  visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE))}
+
+
+```
+
+
+```
+library("robin")
+my_network <- system.file("example/football.gml", package="robin")
+# downloaded from: http://www-personal.umich.edu/~mejn/netdata/
+graph <- prepGraph(file=my_network, file.format="gml")
+graph
+graphRandom <- random(graph=graph)
+graphRandom
+plotGraph(graph)
+
+
+```
+
+
+
